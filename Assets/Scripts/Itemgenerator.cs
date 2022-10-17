@@ -1,34 +1,45 @@
-
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Itemgenerator : MonoBehaviour
+public class ItemGenerator : MonoBehaviour
 {
-    public GameObject item;
+    public List<GameObject> ObjectsToSpawn = new List<GameObject>();
+    public bool IsTimer, Israndomized;
+    public float TimetoSpawn;
+    private float CurrentTimetoSpawn;
 
-    public float MinSpeed, MaxSpeed, CurrentSpeed, SpeedMultiplier;
-    void Awake()
+    void Start()
     {
-        CurrentSpeed = MinSpeed;
-        generateObjeto();
+        
     }
-
-    public void GenerateNextSpikeWithGap()
-    {
-        float randomWait = Random.Range(10.0f, 15.0f);
-        Invoke("generateObjeto", randomWait);
-    }
-    void generateObjeto()
-    {
-        GameObject ItemIns = Instantiate(item, transform.position, transform.rotation);
-        ItemIns.GetComponent<Item>().objeto = this;
-
-    }
-    // Update is called once per frame
     void Update()
     {
-        if(CurrentSpeed < MaxSpeed)
+        if (IsTimer)
         {
-            CurrentSpeed += SpeedMultiplier;
+            UpdateTimer();
+        }
+    }
+
+    public void SpawnObject()
+    {
+        int index = Israndomized ? Random.Range(0, ObjectsToSpawn.Count) : 0;
+        if (ObjectsToSpawn.Count > 0)
+        {
+            Instantiate(ObjectsToSpawn[index], transform.position, transform.rotation );
+        }
+    }
+
+    private void UpdateTimer()
+    {
+        if (CurrentTimetoSpawn > 0)
+        {
+            CurrentTimetoSpawn -= Time.deltaTime;
+        }
+        else
+        {
+            SpawnObject();
+            CurrentTimetoSpawn = TimetoSpawn;
         }
     }
 }
