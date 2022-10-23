@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spawnermovement : MonoBehaviour
 {
-    public float amp, frecuent;
+    public int amp, frecuent;
         private Vector3 init;
         void Start()
         {

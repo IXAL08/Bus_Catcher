@@ -8,6 +8,7 @@ public class Movimiento : MonoBehaviour
     private Rigidbody2D _player;
     private SpriteRenderer _spriteRenderer;
     public Vector2 velocity;
+    public static bool isMagnetic;
     public bool speedUp = true;
     public bool marcador = false;
     public float desaselerar = 0.01f;
@@ -26,7 +27,7 @@ public class Movimiento : MonoBehaviour
 
     void Start()
     {
-
+        isMagnetic = false;
     }
 
     // Update is called once per frame
@@ -45,6 +46,19 @@ public class Movimiento : MonoBehaviour
         isonground = true;
     }
 
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.tag == "Coin")
+        {
+            Destroy(col.gameObject);
+        }
+        if (col.tag == "Magnet")
+        {
+            isMagnetic = true;
+            Destroy(col.gameObject);
+        }
+    }
+
     void FixedUpdate()
     {
         if (velocity.x >= 30)
@@ -60,7 +74,7 @@ public class Movimiento : MonoBehaviour
         {
             if (speedUp && velocity.x <= 60)
             {
-            velocity.x += acelerar * Time.fixedDeltaTime;
+                velocity.x += acelerar * Time.fixedDeltaTime;
             }
             else
             {
@@ -69,5 +83,6 @@ public class Movimiento : MonoBehaviour
             }
         }
     }
+    
 }
     
